@@ -54,7 +54,7 @@ An intelligent data analysis, search system and agentic workflow system built wi
 
 1. **Clone the repository**
    ```bash
-   git clone <your-repo-url>
+   git clone <repo-url>
    cd ai-data-search-py
    ```
 
