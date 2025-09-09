@@ -282,8 +282,8 @@ python debug_test.py
 5. Submit a pull request
 
 ## 📄 License
+This project is licensed under the MIT License - see the file for details.
 
-This project is open source. Please add your preferred license.
 
 ## 🐛 Troubleshooting
 
