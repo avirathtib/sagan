@@ -1,0 +1,200 @@
+{
+    "entities": {
+      "RawMaterialItem": {
+        "table": "raw_material_item",
+        "attributes": {
+          "rm_code": "Primary Key, unique identifier for raw material",
+          "rm_name": "Name of the raw material",
+          "uom": "Unit of Measure (KG, TONS, LITERS)",
+          "created_at": "Record creation date"
+        }
+      },
+      "FinishedGoodItem": {
+        "table": "finished_good_item",
+        "attributes": {
+          "fg_code": "Primary Key, unique identifier for finished good",
+          "fg_name": "Product Name",
+          "parent_category": "Product Category (MASTERBATCH, BIO_FILLER, ADDITIVE, etc.)",
+          "uom": "Sales Unit of Measure",
+          "created_at": "Product launch date"
+        }
+      },
+      "Supplier": {
+        "table": "supplier",
+        "attributes": {
+          "supplier_id": "Primary Key, unique identifier for supplier",
+          "supplier_name": "Supplier business name",
+          "gst_no": "GST Registration Number",
+          "credit_limit": "Credit limit amount",
+          "outstanding_amount": "Current outstanding balance",
+          "category": "Supplier category",
+          "created_at": "Supplier registration date"
+        }
+      },
+      "Customer": {
+        "table": "customer",
+        "attributes": {
+          "customer_id": "Primary Key, unique identifier for customer",
+          "customer_name": "Customer business name",
+          "gst_no": "Customer GST number",
+          "outstanding_amount": "Accounts receivable balance",
+          "category": "Customer segment (DISTRIBUTOR, DIRECT, etc.)",
+          "created_at": "Customer registration date"
+        }
+      },
+      "PurchaseOrder": {
+        "table": "purchase_order",
+        "attributes": {
+          "po_id": "Primary Key, purchase order number",
+          "supplier_id": "Foreign Key -> Supplier.supplier_id",
+          "po_date": "Order date",
+          "total_qty": "Total order quantity",
+          "total_excl_tax": "Subtotal before tax",
+          "total_tax": "Total tax amount",
+          "total_incl_tax": "Grand total including all taxes",
+          "status": "Order status (PENDING, RECEIVED, CANCELLED)",
+          "created_at": "Record creation timestamp"
+        }
+      },
+      "PurchaseOrderLine": {
+        "table": "purchase_order_line",
+        "attributes": {
+          "po_line_id": "Primary Key, line item ID",
+          "po_id": "Foreign Key -> PurchaseOrder.po_id",
+          "rm_code": "Foreign Key -> RawMaterialItem.rm_code",
+          "qty": "Order quantity",
+          "rate": "Unit price",
+          "value": "Line total (qty * rate)",
+          "uom": "Unit of measure"
+        }
+      },
+      "PurchaseRegister": {
+        "table": "purchase_register",
+        "attributes": {
+          "pr_id": "Primary Key, receipt ID",
+          "po_id": "Foreign Key -> PurchaseOrder.po_id",
+          "supplier_invoice_no": "Supplier invoice number",
+          "pr_date": "Receipt date",
+          "total_qty": "Total received quantity",
+          "total_excl_tax": "Invoice subtotal",
+          "total_tax": "Total tax amount",
+          "total_incl_tax": "Invoice total amount",
+          "payment_terms": "Payment terms",
+          "category": "Purchase category",
+          "supplier_id": "Foreign Key -> Supplier.supplier_id",
+          "created_at": "Record creation date",
+          "updated_at": "Last modified date"
+        }
+      },
+      "ManufacturingJournal": {
+        "table": "manufacturing_journal",
+        "attributes": {
+          "mj_id": "Primary Key, production run ID",
+          "mj_date": "Production date",
+          "fg_code": "Foreign Key -> FinishedGoodItem.fg_code",
+          "output_qty": "Production quantity",
+          "voucher_no": "Production voucher reference",
+          "created_at": "Record creation date"
+        }
+      },
+      "ManufacturingJournalLine": {
+        "table": "manufacturing_journal_line",
+        "attributes": {
+          "mj_line_id": "Primary Key, consumption line ID",
+          "mj_id": "Foreign Key -> ManufacturingJournal.mj_id",
+          "rm_code": "Foreign Key -> RawMaterialItem.rm_code",
+          "rm_qty_used": "Consumption quantity"
+        }
+      },
+      "BillOfMaterial": {
+        "table": "bill_of_material",
+        "attributes": {
+          "fg_code": "Composite PK, Foreign Key -> FinishedGoodItem.fg_code",
+          "rm_code": "Composite PK, Foreign Key -> RawMaterialItem.rm_code",
+          "qty_per_kg_fg": "Raw material requirement per KG of finished good",
+          "fg_rate_per_kg": "Finished good rate per KG",
+          "rm_rate_per_kg": "Raw material rate per KG",
+          "created_at": "Recipe creation date"
+        }
+      },
+      "SalesRegister": {
+        "table": "sales_register",
+        "attributes": {
+          "inv_id": "Primary Key, invoice number",
+          "customer_id": "Foreign Key -> Customer.customer_id",
+          "inv_date": "Invoice date",
+          "total_qty": "Total quantity sold",
+          "total_excl_tax": "Invoice subtotal",
+          "total_tax": "Total tax amount",
+          "total_incl_tax": "Invoice grand total",
+          "payment_status": "Payment status (PENDING, PAID, OVERDUE)",
+          "created_at": "Record creation date"
+        }
+      },
+      "SalesLineItem": {
+        "table": "sales_line_item",
+        "attributes": {
+          "inv_line_id": "Primary Key, invoice line ID",
+          "inv_id": "Foreign Key -> SalesRegister.inv_id",
+          "fg_code": "Foreign Key -> FinishedGoodItem.fg_code",
+          "qty": "Quantity sold",
+          "sale_price": "Unit selling price",
+          "tax_rate": "Tax rate applied",
+          "sale_value": "Line total value"
+        }
+      },
+      "SupplierPriceHistory": {
+        "table": "supplier_price_history",
+        "attributes": {
+          "sph_id": "Primary Key, price history ID",
+          "supplier_id": "Foreign Key -> Supplier.supplier_id",
+          "rm_code": "Foreign Key -> RawMaterialItem.rm_code",
+          "quoted_price": "Quoted unit price",
+          "quote_date": "Quotation date",
+          "created_at": "Record creation date"
+        }
+      },
+      "CustomerPriceHistory": {
+        "table": "customer_price_history",
+        "attributes": {
+          "cph_id": "Primary Key, price history ID",
+          "customer_id": "Foreign Key -> Customer.customer_id",
+          "fg_code": "Foreign Key -> FinishedGoodItem.fg_code",
+          "sale_price": "Selling price",
+          "price_date": "Price effective date",
+          "created_at": "Record creation date"
+        }
+      },
+      "RawMaterialInventorySnapshot": {
+        "table": "rm_inventory_snapshot",
+        "attributes": {
+          "rm_code": "Composite PK, Foreign Key -> RawMaterialItem.rm_code",
+          "snapshot_date": "Composite PK, inventory date",
+          "opening_qty": "Opening stock",
+          "qty_in": "Receipts during day",
+          "qty_out": "Consumption during day",
+          "closing_qty": "Closing stock",
+          "created_at": "Snapshot creation date"
+        }
+      }
+    },
+    "relationships": [
+      {"source": "PurchaseOrder.supplier_id", "target": "Supplier.supplier_id", "type": "N:1"},
+      {"source": "PurchaseOrderLine.po_id", "target": "PurchaseOrder.po_id", "type": "N:1"},
+      {"source": "PurchaseOrderLine.rm_code", "target": "RawMaterialItem.rm_code", "type": "N:1"},
+      {"source": "PurchaseRegister.supplier_id", "target": "Supplier.supplier_id", "type": "N:1"},
+      {"source": "ManufacturingJournal.fg_code", "target": "FinishedGoodItem.fg_code", "type": "N:1"},
+      {"source": "ManufacturingJournalLine.mj_id", "target": "ManufacturingJournal.mj_id", "type": "N:1"},
+      {"source": "BillOfMaterial.fg_code", "target": "FinishedGoodItem.fg_code", "type": "N:1"},
+      {"source": "BillOfMaterial.rm_code", "target": "RawMaterialItem.rm_code", "type": "N:1"},
+      {"source": "SalesRegister.customer_id", "target": "Customer.customer_id", "type": "N:1"},
+      {"source": "SalesLineItem.inv_id", "target": "SalesRegister.inv_id", "type": "N:1"},
+      {"source": "SalesLineItem.fg_code", "target": "FinishedGoodItem.fg_code", "type": "N:1"},
+      {"source": "SupplierPriceHistory.supplier_id", "target": "Supplier.supplier_id", "type": "N:1"},
+      {"source": "SupplierPriceHistory.rm_code", "target": "RawMaterialItem.rm_code", "type": "N:1"},
+      {"source": "CustomerPriceHistory.customer_id", "target": "Customer.customer_id", "type": "N:1"},
+      {"source": "CustomerPriceHistory.fg_code", "target": "FinishedGoodItem.fg_code", "type": "N:1"},
+      {"source": "RawMaterialInventorySnapshot.rm_code", "target": "RawMaterialItem.rm_code", "type": "N:1"}
+    ]
+  }
+  
