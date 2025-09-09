@@ -5,6 +5,7 @@ An intelligent data analysis, search system and agentic workflow system built wi
 ## 🚀 Features
 
 - **AI-Powered Workflow System**: Dynamic decision-making with branching workflows
+- **Prompts optimized with DsPy**: Uses modern frameworks like DsPy and GEPA for prompt iteration and ease
 - **Database Integration**: PostgreSQL connectivity with intelligent SQL generation
 - **Interactive Charts**: Data visualization and charting tools
 - **Gmail Integration**: Email automation and communication features
