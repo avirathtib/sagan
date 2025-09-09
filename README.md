@@ -1,4 +1,4 @@
-# AI Data Search & Analysis Tool
+# AI Orchestration Backend for Sagan
 
 An intelligent data analysis, search system and agentic workflow system built with Python that combines workflow automation, database querying, charting capabilities, and AI-powered insights.
 
